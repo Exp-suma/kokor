@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="位置情報を固定"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="24dp" />
+
+    <EditText
+        android:id="@+id/latInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="緯度 (例: 35.681236)"
+        android:inputType="numberDecimal|numberSigned" />
+
+    <EditText
+        android:id="@+id/lngInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="経度 (例: 139.767125)"
+        android:inputType="numberDecimal|numberSigned" />
+
+    <Button
+        android:id="@+id/startBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="固定開始"
+        android:layout_marginTop="24dp" />
+
+    <Button
+        android:id="@+id/stopBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="固定解除"
+        style="@style/Widget.Material3.Button.OutlinedButton" />
+</LinearLayout>
