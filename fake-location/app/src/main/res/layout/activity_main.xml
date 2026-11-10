@@ -2,43 +2,90 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp"
-    android:gravity="center_horizontal">
+    android:orientation="vertical">
 
+    <!-- 地図 -->
+    <org.osmdroid.views.MapView
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- 選択位置表示 -->
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/selectedPointText"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="位置情報を固定"
-        android:textSize="22sp"
+        android:padding="8dp"
+        android:text="地図をタップして位置を選択(長押しで登録)"
+        android:textSize="14sp" />
+
+    <!-- 操作ボタン -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="4dp">
+
+        <Button
+            android:id="@+id/btnStart"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="🔒 固定開始" />
+
+        <Button
+            android:id="@+id/btnStop"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="🔓 解除" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="4dp">
+
+        <Button
+            android:id="@+id/btnCurrent"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="📍 現在地" />
+
+        <Button
+            android:id="@+id/btnSave"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="💾 登録" />
+
+        <Button
+            android:id="@+id/btnTest"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="🧪 テスト" />
+    </LinearLayout>
+
+    <!-- 事前登録地点リスト -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="12dp"
+        android:paddingTop="8dp"
+        android:text="登録済み地点(タップ=選択 / 長押し=削除)"
         android:textStyle="bold"
-        android:layout_marginBottom="24dp" />
+        android:textSize="13sp" />
 
-    <EditText
-        android:id="@+id/latInput"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/savedList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="緯度 (例: 35.681236)"
-        android:inputType="numberDecimal|numberSigned" />
-
-    <EditText
-        android:id="@+id/lngInput"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="経度 (例: 139.767125)"
-        android:inputType="numberDecimal|numberSigned" />
-
-    <Button
-        android:id="@+id/startBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="固定開始"
-        android:layout_marginTop="24dp" />
-
-    <Button
-        android:id="@+id/stopBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="固定解除"
-        style="@style/Widget.Material3.Button.OutlinedButton" />
+        android:layout_height="120dp" />
 </LinearLayout>
