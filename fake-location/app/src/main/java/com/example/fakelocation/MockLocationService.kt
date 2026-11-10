@@ -17,6 +17,8 @@ class MockLocationService : Service() {
 
     companion object {
         const val CHANNEL_ID = "mock_location_channel"
+        @Volatile var isRunning = false
+            private set
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -33,11 +35,13 @@ class MockLocationService : Service() {
                     pushMockLocation()
                 } catch (e: SecurityException) {
                     stopSelf()
+                    return
                 }
-                handler.postDelayed(this, 1000) // 1秒ごとに送信
+                handler.postDelayed(this, 1000)
             }
         }
         handler.post(runnable)
+        isRunning = true
         return START_STICKY
     }
 
@@ -47,6 +51,9 @@ class MockLocationService : Service() {
         val providers = listOf(LocationManager.GPS_PROVIDER, LocationManager.NETWORK_PROVIDER)
         for (provider in providers) {
             try {
+                try {
+                    lm.removeTestProvider(provider)
+                } catch (_: Exception) {}
                 lm.addTestProvider(
                     provider,
                     false, false, false, false, true, true, true, 3, 5
@@ -56,13 +63,13 @@ class MockLocationService : Service() {
                     longitude = lng
                     accuracy = 1.0f
                     altitude = 0.0
+                    speed = 0.0f
+                    bearing = 0.0f
                     time = System.currentTimeMillis()
                     elapsedRealtimeNanos = SystemClock.elapsedRealtimeNanos()
                 }
                 lm.setTestProviderLocation(provider, loc)
-            } catch (_: Exception) {
-                // NETWORK_PROVIDERが無効な端末では無視
-            }
+            } catch (_: Exception) {}
         }
     }
 
@@ -79,13 +86,14 @@ class MockLocationService : Service() {
     private fun buildNotification(): Notification {
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("位置情報固定中")
-            .setContentText("($lat, $lng) に固定されています")
+            .setContentText("(%.5f, %.5f) に固定されています".format(lat, lng))
             .setSmallIcon(android.R.drawable.ic_menu_mylocation)
             .setOngoing(true)
             .build()
     }
 
     override fun onDestroy() {
+        isRunning = false
         handler.removeCallbacks(runnable)
         val lm = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         try {
